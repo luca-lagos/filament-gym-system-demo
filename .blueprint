@@ -1,0 +1,19 @@
+created:
+    - database/factories/MemberFactory.php
+    - database/factories/MembershipTypeFactory.php
+    - database/factories/PaymentFactory.php
+    - database/factories/InvoiceFactory.php
+    - database/migrations/2025_03_14_180307_create_members_table.php
+    - database/migrations/2025_03_14_180308_create_membership_types_table.php
+    - database/migrations/2025_03_14_180309_create_payments_table.php
+    - database/migrations/2025_03_14_180310_create_invoices_table.php
+    - app/Models/Member.php
+    - app/Models/MembershipType.php
+    - app/Models/Payment.php
+    - app/Models/Invoice.php
+models:
+    User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
+    Member: { id: id, name: 'string:255', email: 'string:255 unique', phone: 'string:20', address: 'string:255', membership_start_date: date, membership_end_date: 'nullable date', membership_type_id: 'foreignId:constrained:cascade', relationships: { belongsTo: membership_type, hasMany: 'payments, invoices' } }
+    MembershipType: { id: id, name: 'string:255', description: text, price: 'decimal:8,2', duration_months: integer, relationships: { hasMany: members } }
+    Payment: { id: id, member_id: 'foreignId:constrained:cascade', amount: 'decimal:8,2', payment_date: date, payment_method: 'string:50', relationships: { belongsTo: member } }
+    Invoice: { id: id, member_id: 'foreignId:constrained:cascade', amount: 'decimal:8,2', due_date: date, paid: boolean, relationships: { belongsTo: member } }

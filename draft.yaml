@@ -1,0 +1,40 @@
+models:
+  Member:
+    id: id
+    name: string:255
+    email: string:255 unique
+    phone: string:20
+    address: string:255
+    membership_start_date: date
+    membership_end_date: nullable date
+    membership_type_id: foreignId:constrained:cascade
+    relationships:
+      belongsTo: membership_type
+      hasMany: payments, invoices
+
+  MembershipType:
+    id: id
+    name: string:255
+    description: text
+    price: decimal:8,2
+    duration_months: integer
+    relationships:
+      hasMany: members
+
+  Payment:
+    id: id
+    member_id: foreignId:constrained:cascade
+    amount: decimal:8,2
+    payment_date: date
+    payment_method: string:50
+    relationships:
+      belongsTo: member
+
+  Invoice:
+    id: id
+    member_id: foreignId:constrained:cascade
+    amount: decimal:8,2
+    due_date: date
+    paid: boolean
+    relationships:
+      belongsTo: member
